@@ -83,6 +83,8 @@
             <div class="col-md-8 col-lg-9">
                 <h1>Recipe
                     {%  if category %} in category '{{  category }}' {% endif %}
+                    {%  if tag %} with tag '{{ tag }}' {% endif %}
+
                 </h1>
 
                 {% for p in post_list %}
@@ -98,6 +100,15 @@
                         <h2 class="card-title">{{ p.title}}</h2>
                         <p class="card-text">{{ p.content | truncatewords:45 }}</p>
                         <a href="{{ p.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+                        {% if p.tags.exists %}
+                            <br/>
+                            <i class = "fas fa=tags"></i>
+                            {% for tag in p.tags.iterator %}
+                                <a href = {{ tag.get_absolute_url }}> {{ tag }}</a>
+                            {% endfor %}
+                            <br/>
+                            <br/>
+                        {% endif %}
                     </div>
                     <div class="card-footer text-muted">
                         Posted on {{ p.created_at}} by
