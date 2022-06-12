@@ -12,6 +12,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return f'/recipe/category/{self.slug}/'
+
     class Meta:
         verbose_name_plural: 'Categories'
 
@@ -29,15 +32,12 @@ class Post(models.Model):
     author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
+    # 모델 메소드 정의(오버라이드)
+    def __str__(self):
+        return f'[{self.pk}]{self.title} :: {self.author}'
 
-# 모델 메소드 정의(오버라이드)
-def __str__(self):
-    return f'[{self.pk}]{self.title} :: {self.author}'
+    def get_absolute_url(self):
+        return f'/recipe/{self.pk}/'
 
-
-def get_absolute_url(self):
-    return f'/recipe/{self.pk}/'
-
-
-def get_file_name(self):
-    return os.path.basename(self.attached_file.name)
+    def get_file_name(self):
+        return os.path.basename(self.attached_file.name)
