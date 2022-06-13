@@ -1,6 +1,8 @@
 import os
 from django.db import models
 from django.contrib.auth.models import User
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdown
 
 
 # Create your models here.
@@ -13,7 +15,7 @@ class Tag(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return f'/web/tag/{self.slug}/'
+        return f'/recipe/tag/{self.slug}/'
 
 
 class Category(models.Model):
@@ -34,6 +36,8 @@ class Post(models.Model):
     title = models.CharField(max_length=30)
     content = models.TextField()
 
+    hook_msg = models.TextField(blank=True)
+
     head_image = models.ImageField(upload_to='web/images/%Y/%m/%d/', blank=True)
     attached_file = models.FileField(upload_to='web/files/%Y/%m/%d/', blank=True)
 
@@ -53,3 +57,6 @@ class Post(models.Model):
 
     def get_file_name(self):
         return os.path.basename(self.attached_file.name)
+
+    def get_content_markdown(self):
+        return markdown(self.content)
