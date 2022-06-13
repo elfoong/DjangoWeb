@@ -10,13 +10,13 @@
             <a href="/recipe/create_post" role="button">Create Post</a>
         {% endif %}
     {% endif %}
-                <h1>Blog
+                <h1>Recipe
                     {%  if category %} in category '{{  category }}' {% endif %}
                     {%  if tag %} with tag '{{ tag }}' {% endif %}
                 </h1>
 
                 {% for p in post_list %}
-                <!-- Blog Post -->
+                <!-- Recipe Post -->
                 <div class="card mb-4">
                     {% if p.head_image %}
                         <img class="card-img-top" src="{{ p.head_image.url }}" alt="Card image cap">
@@ -26,13 +26,17 @@
                     {% endif %}
                     <div class="card-body">
                         <h2 class="card-title">{{ p.title}}</h2>
+                        {% if p.hook_msg %}
+                            <h5 class="text-muted">{{ p.hook_msg }}</h5>
+                        {% endif %}
                         <p class="card-text">{{ p.get_content_markdown | truncatewords_html:30 | safe }}</p>
                         <a href="{{ p.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+                        </br>
                         {% if p.tags.exists %}
                             <br/>
                             <i class = "fas fa=tags"></i>
                             {% for tag in p.tags.iterator %}
-                                <a href = {{ tag.get_absolute_url }}> {{ tag }}</a>
+                                <a href = "{{ tag.get_absolute_url }}" class="badge badge-light"> {{ tag }}</a>
                             {% endfor %}
                             <br/>
                             <br/>
