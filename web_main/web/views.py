@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from django.shortcuts import get_object_or_404
-
+from .forms import CommentForm
 from .models import Post, Category, Tag
 
 
@@ -47,7 +47,7 @@ class PostList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(PostList, self).get_context_data()
         context['categories'] = Category.objects.all()
-        context['no_category_post_count'] = not Post.objects.filter(category=None).count()
+        context['count_posts_without_category'] = not Post.objects.filter(category=None).count()
         return context
 
 
@@ -58,6 +58,7 @@ class PostDetail(DetailView):
         context = super(PostDetail, self).get_context_data()
         context['categories'] = Category.objects.all()
         context['count_posts_without_category'] = Post.objects.filter(category=None).count()
+        context['comment_form'] = CommentForm
         return context
 
 
@@ -91,27 +92,18 @@ def show_tag_posts(request, slug):
     return render(request, 'web/post_list.html', context)
 
 
-'''
-def index(request):
-    posts = Post.objects.all().order_by('-pk')
+def addComment(request, pk):
+    if request.user.is_authenticated:
+        post = get_object_or_404(Post, pk=pk)
 
-    return render(
-        request,
-        'web/post_list.html',
-        {
-            'posts': posts,
-        }
-    )
-'''
-
-
-def single_post_page(request, pk):
-    post = Post.objects.get(pk=pk)
-
-    return render(
-        request,
-        'web/post_detail.html',
-        {
-            'post': post,
-        }
-    )
+        if request.method == "POST":
+            comment_form = CommentForm(request.POST)
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect(comment.get_absolute_url())
+        else:
+            return redirect(post.get_absolute_url())
+    else:
+        raise PermissionDenied
