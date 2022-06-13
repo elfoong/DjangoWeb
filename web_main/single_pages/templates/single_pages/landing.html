@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
+<!{% extends 'web/base.html' %}
+
+{% block title %}
     <title>홈페이지 대문</title>
-</head>
-<body>
-    <h1>대문 페이지!</h1>
-</body>
-</html>
+{% endblock %}
+{% block main_area %}
+    <h1>대문페이지!</h1>
+    </br>
+    <h4>최근 등록된 레시피</h4>
+    </br>
+    {% for post in recent_post %}
+        <p>{{ post.title }} - {{ post.content | truncatewords:30 }}</p>
+    {% endfor %}
+
+
+{% endblock %}
