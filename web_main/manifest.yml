@@ -2,6 +2,6 @@
 applications:
 - name: MagicalRecipe
   buildpack: python_buildpack
-  memory: 256M
+  memory: 512M
   instances: 1
   command : waitress-serve --port=8080 web_main.wsgi:application
