@@ -10,7 +10,8 @@
       <div class="col-lg-8">
 
         {% if user.is_authenticated and user == post.author %}
-            <a href="/recipe/update_post/{{ post.pk }}">Update Post</a>
+          <a href="/recipe/update_post/{{ post.pk }}">레시피 수정</a>
+          </br>
         {% endif %}
 
         <!-- Title -->

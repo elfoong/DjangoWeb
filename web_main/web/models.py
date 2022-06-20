@@ -29,7 +29,7 @@ class Category(models.Model):
         return f'/recipe/category/{self.slug}/'
 
     class Meta:
-        verbose_name_plural: 'Categories'
+        verbose_name_plural: 'categories'
 
 
 class Post(models.Model):

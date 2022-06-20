@@ -1,15 +1,17 @@
-<!{% extends 'web/base.html' %}
+{% extends 'web/base.html' %}
 
 {% block title %}
-    <title>홈페이지 대문</title>
+    <title>마법의 레시피</title>
 {% endblock %}
 {% block main_area %}
-    <h1>대문페이지!</h1>
+    <h1>마법의 레시피</h1>
     </br>
     <h4>최근 등록된 레시피</h4>
     </br>
     {% for post in recent_post %}
-        <p>{{ post.title }} - {{ post.content | truncatewords:30 }}</p>
+        <a href="{{ post.get_absolute_url }}">{{ post.title }} - {{ post.content | truncatewords:30 }}</a>
+        </br>
+        </br>
     {% endfor %}
 
 

@@ -1,16 +1,18 @@
 {% extends 'web/base.html' %}
 
 {% block title %}
-    <title>Recipe</title>
+    <title>마법의 레시피</title>
 {% endblock %}
 
 {% block main_area %}
     {% if user.is_authenticated %}
         {% if user.is_superuser or user.is_staff %}
-            <a href="/recipe/create_post" role="button">Create Post</a>
+            <a href="/recipe/create_post" role="button">레시피 등록</a>
+            </br>
+            </br>
         {% endif %}
     {% endif %}
-                <h1>Recipe
+                <h1>레시피 목록
                     {%  if category %} in category '{{  category }}' {% endif %}
                     {%  if tag %} with tag '{{ tag }}' {% endif %}
                 </h1>
@@ -27,10 +29,11 @@
                     <div class="card-body">
                         <h2 class="card-title">{{ p.title}}</h2>
                         {% if p.hook_msg %}
-                            <h5 class="text-muted">{{ p.hook_msg }}</h5>
+                            <p class="text-muted">{{ p.hook_msg }}</p>
+                        {% else %}
+                            <p class="card-text">{{ p.get_content_markdown | truncatewords_html:30 | safe }}</p>
                         {% endif %}
-                        <p class="card-text">{{ p.get_content_markdown | truncatewords_html:30 | safe }}</p>
-                        <a href="{{ p.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+                        <a href="{{ p.get_absolute_url }}" class="btn btn-primary">자세히 보기 &rarr;</a>
                         </br>
                         {% if p.tags.exists %}
                             <br/>

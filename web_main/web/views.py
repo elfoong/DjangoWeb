@@ -11,7 +11,7 @@ from .models import Post, Category, Tag
 # Create your views here.
 class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
-    fields = ['title', 'content', 'hook_msg', 'head_image', 'attached_file', 'category']
+    fields = ['title', 'content', 'hook_msg', 'head_image', 'attached_file', 'category', 'tags']
 
     template_name = 'web/post_form_update.html'
 
@@ -25,7 +25,7 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
 
 class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content', 'hook_msg', 'head_image', 'attached_file', 'category']
+    fields = ['title', 'content', 'hook_msg', 'head_image', 'attached_file', 'category', 'tags']
 
     def test_func(self):
         return self.request.user.is_superuser or self.request.user.is_staff
@@ -63,7 +63,7 @@ class PostDetail(DetailView):
 
 
 def show_category_posts(request, slug):
-    if slug == 'no-category':  # 미분류 글 요청
+    if slug == 'no-category':
         category = '미분류'
         post_list = Post.objects.filter(category=None)
     else:
@@ -84,7 +84,7 @@ def show_tag_posts(request, slug):
     post_list = tag.post_set.all()
 
     context = {
-        'categories': Category.objects.all(),
+        'tags': Tag.objects.all(),
         'count_posts_without_category': Post.objects.filter(category=None).count(),
         'tag': tag,
         'post_list': post_list
